@@ -1,0 +1,12 @@
+diff --git a/lib/eventchn_stubs.c b/lib/eventchn_stubs.c
+index 7054cd1..c8f7fb2 100644
+--- a/lib/eventchn_stubs.c
++++ b/lib/eventchn_stubs.c
+@@ -23,6 +23,7 @@
+ #include <sys/ioctl.h>
+ #include <string.h>
+ 
++#define XC_WANT_COMPAT_EVTCHN_API
+ #include <xenctrl.h>
+ #include <xen/xen.h>
+ #include <xen/sys/evtchn.h>
