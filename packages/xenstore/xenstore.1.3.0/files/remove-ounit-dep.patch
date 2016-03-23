@@ -1,0 +1,46 @@
+diff --git a/core_test/xs_test.ml b/core_test/xs_test.ml
+index 7472769..5daf14b 100644
+--- a/core_test/xs_test.ml
++++ b/core_test/xs_test.ml
+@@ -12,8 +12,6 @@
+  * GNU Lesser General Public License for more details.
+  *)
+ 
+-open OUnit
+-
+ let ( |> ) a b = b a
+ let id x = x
+ 
+diff --git a/server_test/server_test.ml b/server_test/server_test.ml
+index c44ea08..a34f5ee 100644
+--- a/server_test/server_test.ml
++++ b/server_test/server_test.ml
+@@ -12,8 +12,6 @@
+  * GNU Lesser General Public License for more details.
+  *)
+ 
+-open OUnit
+-
+ let ( |> ) a b = b a
+ let ( ++ ) a b x = a (b x)
+ let id x = x
+diff --git a/setup.ml b/setup.ml
+index 0c0b442..fc8232f 100644
+--- a/setup.ml
++++ b/setup.ml
+@@ -7127,7 +7127,6 @@ let setup_t =
+                            FindlibPackage ("lwt", None);
+                            FindlibPackage ("lwt.unix", None);
+                            InternalLibrary "xenstore";
+-                           FindlibPackage ("oUnit", None)
+                         ];
+                       bs_build_tools = [ExternalTool "ocamlbuild"];
+                       bs_c_sources = [];
+@@ -7160,7 +7159,6 @@ let setup_t =
+                            FindlibPackage ("lwt", None);
+                            InternalLibrary "xenstore";
+                            InternalLibrary "xenstore_server";
+-                           FindlibPackage ("oUnit", None)
+                         ];
+                       bs_build_tools = [ExternalTool "ocamlbuild"];
+                       bs_c_sources = [];
