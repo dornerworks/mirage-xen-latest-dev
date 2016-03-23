@@ -1,5 +1,3 @@
-diff --git a/core_test/xs_test.ml b/core_test/xs_test.ml
-index 7472769..5daf14b 100644
 --- a/core_test/xs_test.ml
 +++ b/core_test/xs_test.ml
 @@ -12,8 +12,6 @@
@@ -11,6 +9,18 @@ index 7472769..5daf14b 100644
  let ( |> ) a b = b a
  let id x = x
  
+diff --git a/opam b/opam
+index c864992..e25e2cf 100644
+--- a/opam
++++ b/opam
+@@ -23,7 +23,6 @@ depends: [
+   "ppx_tools"
+   "lwt"
+   "camlp4" {build}
+-  "ounit" {build}
+ ]
+ depexts: [
+   [["debian"] ["libxen-dev" "uuid-dev"]]
 diff --git a/server_test/server_test.ml b/server_test/server_test.ml
 index c44ea08..a34f5ee 100644
 --- a/server_test/server_test.ml
@@ -25,22 +35,133 @@ index c44ea08..a34f5ee 100644
  let ( ++ ) a b x = a (b x)
  let id x = x
 diff --git a/setup.ml b/setup.ml
-index 0c0b442..fc8232f 100644
+index 0c0b442..f242293 100644
 --- a/setup.ml
 +++ b/setup.ml
-@@ -7127,7 +7127,6 @@ let setup_t =
-                            FindlibPackage ("lwt", None);
-                            FindlibPackage ("lwt.unix", None);
-                            InternalLibrary "xenstore";
+@@ -7107,126 +7107,6 @@ let setup_t =
+                       lib_findlib_name = Some "server";
+                       lib_findlib_containers = []
+                    });
+-               Executable
+-                 ({
+-                     cs_name = "xs_test";
+-                     cs_data = PropList.Data.create ();
+-                     cs_plugin_data = []
+-                  },
+-                   {
+-                      bs_build =
+-                        [
+-                           (OASISExpr.EBool true, false);
+-                           (OASISExpr.EFlag "tests", true)
+-                        ];
+-                      bs_install = [(OASISExpr.EBool true, false)];
+-                      bs_path = "core_test";
+-                      bs_compiled_object = Best;
+-                      bs_build_depends =
+-                        [
+-                           FindlibPackage ("lwt", None);
+-                           FindlibPackage ("lwt.unix", None);
+-                           InternalLibrary "xenstore";
 -                           FindlibPackage ("oUnit", None)
-                         ];
-                       bs_build_tools = [ExternalTool "ocamlbuild"];
-                       bs_c_sources = [];
-@@ -7160,7 +7159,6 @@ let setup_t =
-                            FindlibPackage ("lwt", None);
-                            InternalLibrary "xenstore";
-                            InternalLibrary "xenstore_server";
+-                        ];
+-                      bs_build_tools = [ExternalTool "ocamlbuild"];
+-                      bs_c_sources = [];
+-                      bs_data_files = [];
+-                      bs_ccopt = [(OASISExpr.EBool true, [])];
+-                      bs_cclib = [(OASISExpr.EBool true, [])];
+-                      bs_dlllib = [(OASISExpr.EBool true, [])];
+-                      bs_dllpath = [(OASISExpr.EBool true, [])];
+-                      bs_byteopt = [(OASISExpr.EBool true, [])];
+-                      bs_nativeopt = [(OASISExpr.EBool true, [])]
+-                   },
+-                   {exec_custom = true; exec_main_is = "xs_test.ml"});
+-               Executable
+-                 ({
+-                     cs_name = "server_test";
+-                     cs_data = PropList.Data.create ();
+-                     cs_plugin_data = []
+-                  },
+-                   {
+-                      bs_build =
+-                        [
+-                           (OASISExpr.EBool true, false);
+-                           (OASISExpr.EFlag "tests", true)
+-                        ];
+-                      bs_install = [(OASISExpr.EBool true, false)];
+-                      bs_path = "server_test";
+-                      bs_compiled_object = Best;
+-                      bs_build_depends =
+-                        [
+-                           FindlibPackage ("lwt", None);
+-                           InternalLibrary "xenstore";
+-                           InternalLibrary "xenstore_server";
 -                           FindlibPackage ("oUnit", None)
-                         ];
-                       bs_build_tools = [ExternalTool "ocamlbuild"];
-                       bs_c_sources = [];
+-                        ];
+-                      bs_build_tools = [ExternalTool "ocamlbuild"];
+-                      bs_c_sources = [];
+-                      bs_data_files = [];
+-                      bs_ccopt = [(OASISExpr.EBool true, [])];
+-                      bs_cclib = [(OASISExpr.EBool true, [])];
+-                      bs_dlllib = [(OASISExpr.EBool true, [])];
+-                      bs_dllpath = [(OASISExpr.EBool true, [])];
+-                      bs_byteopt = [(OASISExpr.EBool true, [])];
+-                      bs_nativeopt = [(OASISExpr.EBool true, [])]
+-                   },
+-                   {exec_custom = true; exec_main_is = "server_test.ml"});
+-               Test
+-                 ({
+-                     cs_name = "xs_test";
+-                     cs_data = PropList.Data.create ();
+-                     cs_plugin_data = []
+-                  },
+-                   {
+-                      test_type = (`Test, "custom", Some "0.4");
+-                      test_command =
+-                        [(OASISExpr.EBool true, ("$xs_test", []))];
+-                      test_custom =
+-                        {
+-                           pre_command = [(OASISExpr.EBool true, None)];
+-                           post_command = [(OASISExpr.EBool true, None)]
+-                        };
+-                      test_working_directory = Some "core_test";
+-                      test_run =
+-                        [
+-                           (OASISExpr.ENot (OASISExpr.EFlag "tests"), false);
+-                           (OASISExpr.EFlag "tests", false);
+-                           (OASISExpr.EAnd
+-                              (OASISExpr.EFlag "tests",
+-                                OASISExpr.EFlag "tests"),
+-                             true)
+-                        ];
+-                      test_tools = [ExternalTool "ocamlbuild"]
+-                   });
+-               Test
+-                 ({
+-                     cs_name = "server_test";
+-                     cs_data = PropList.Data.create ();
+-                     cs_plugin_data = []
+-                  },
+-                   {
+-                      test_type = (`Test, "custom", Some "0.4");
+-                      test_command =
+-                        [(OASISExpr.EBool true, ("$server_test", []))];
+-                      test_custom =
+-                        {
+-                           pre_command = [(OASISExpr.EBool true, None)];
+-                           post_command = [(OASISExpr.EBool true, None)]
+-                        };
+-                      test_working_directory = Some "server_test";
+-                      test_run =
+-                        [
+-                           (OASISExpr.ENot (OASISExpr.EFlag "tests"), false);
+-                           (OASISExpr.EFlag "tests", false);
+-                           (OASISExpr.EAnd
+-                              (OASISExpr.EFlag "tests",
+-                                OASISExpr.EFlag "tests"),
+-                             true)
+-                        ];
+-                      test_tools = [ExternalTool "ocamlbuild"]
+-                   });
+                Doc
+                  ({
+                      cs_name = "core";
