@@ -14,7 +14,6 @@ depends: [
   "lwt"
   "camlp4"
   "cmdliner"
-  "ounit"
   "ocamlbuild" {build}
 ]
 depexts: [
@@ -23,6 +22,7 @@ depexts: [
 ]
 patches: [
   "xen-want-compat-api.patch"
+  "remove-ounit-dep.patch"
 ]
 ocaml-version: [>= "4.00.0"]
 dev-repo: "git://github.com/mirage/ocaml-evtchn"

@@ -1,0 +1,52 @@
+diff --git a/lib_test/main.ml b/lib_test/main.ml
+index 56fc6fe..12454cb 100644
+--- a/lib_test/main.ml
++++ b/lib_test/main.ml
+@@ -13,28 +13,12 @@
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *)
+ 
+-open Lwt
+-open OUnit
+-
+-module Activations = Unix_activations
+-
+-let connect () =
+-  let h = Eventchn.init () in
+-  let listening = Eventchn.bind_unbound_port h 0 in
+-  let connected = Eventchn.bind_interdomain h 0 (Eventchn.to_int listening) in
+-  let t =
+-    (* Without this notify the after will block. This checks
+-       that the background thread is working. *)
+-    Eventchn.notify h connected;
+-    Activations.after listening Activations.program_start
+-    >>= fun now ->
+-    return () in
+-  Lwt_main.run t
++(* Check the linking works *)
+ 
+ let _ =
+-
+-  let suite = "eventchn" >::: [
+-    "connect" >:: connect;
+-  ] in
+-  OUnit2.run_test_tt_main (OUnit.ounit2_of_ounit1 suite)
+-
++  try
++    (* Need to use the module or it might be optimised out *)
++    ignore(Eventchn.init ());
++    Printf.printf "OK (and you ran me as root on well-configured Xen host)\n%!"
++  with _ ->
++    Printf.printf "OK\n%!"
+diff --git a/setup.ml b/setup.ml
+index 4c5a34f..192f283 100644
+--- a/setup.ml
++++ b/setup.ml
+@@ -7070,7 +7070,6 @@ let setup_t =
+                            InternalLibrary "xen_evtchn";
+                            InternalLibrary "xen_evtchn_unix";
+                            InternalLibrary "xen_evtchn_unix_activations";
+-                           FindlibPackage ("oUnit", None);
+                            FindlibPackage ("lwt.unix", None)
+                         ];
+                       bs_build_tools = [ExternalTool "ocamlbuild"];
